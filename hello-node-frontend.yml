@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: hello-node-frontend
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: hello-node
+        tier: frontend
+    spec:
+      containers:
+      - name: hello-node-app
+        image: asia.gcr.io/boreal-quarter-159922/hello-node
+        # This setting makes nodes pull the docker image every time before
+        # starting the pod. This is useful when debugging, but should be turned
+        # off in production.
+        imagePullPolicy: Always
+        # The PROCESSES environment variable is used by Honcho in the
+        # Dockerfile's CMD to control which processes are started. In this
+        # case, only the bookshelf process is needed.
+        env:
+        - name: PROCESSES
+          value: hello-node
+        # The hello-node process listens on port 1337 for web traffic by default.
+        ports:
+        - containerPort: 1337
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-node-frontend
+  labels:
+    app: hello-node
+    tier: frontend
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 1337
+  selector:
+    app: hello-node
+    tier: frontend
