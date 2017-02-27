@@ -1,4 +1,9 @@
 {
+  "name": "hello-node",
+  "version": "1.0.0",
+  "description": "Node.js on Docker",
+  "author": "Evan Bottcher <evan@bottch.com>",
+  "main": "server.js",
   "devDependencies": {
     "babel-cli": "^6.23.0",
     "babel-preset-es2015": "^6.22.0",
@@ -6,6 +11,9 @@
     "babel-register": "^6.23.0",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "express": "^4.14.1"
   },
   "scripts": {
     "start": "nodemon lib/index.js --exec babel-node",
